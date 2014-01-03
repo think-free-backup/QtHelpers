@@ -84,6 +84,8 @@ void NetworkManager::processJson(QString json)
 
             QString module = body.toObject().take("module").toString();
             QString function = body.toObject().take("function").toString();
+            if (function == "")
+                function = body.toObject().take("fct").toString();
             QString params = QJsonDocument( body.toObject().take("param").toArray() ).toJson();
 
             emit callRequest(module, function, params);
