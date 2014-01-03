@@ -22,7 +22,7 @@ class NodeJsCommunication : public QObject
 
     public:
 
-        explicit NodeJsCommunication(QString host,QObject *parent = 0);
+        explicit NodeJsCommunication(QString host,int port, QObject *parent = 0);
 
         // Properties
 
@@ -48,6 +48,7 @@ class NodeJsCommunication : public QObject
 
         QTcpSocket *m_socket;
         QString m_host;
+        int m_port;
         QTimer *m_connectionCheckerTimer;
         QString m_dataStr;
 

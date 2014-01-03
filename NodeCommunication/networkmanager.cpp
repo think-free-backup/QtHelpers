@@ -1,6 +1,6 @@
 #include "networkmanager.h"
 
-NetworkManager::NetworkManager(QString host, QObject *parent) : NodeJsCommunication(host,parent)
+NetworkManager::NetworkManager(QString host, int port, QObject *parent) : NodeJsCommunication(host, port, parent)
 {
     m_logged = false;
 

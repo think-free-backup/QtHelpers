@@ -1,8 +1,9 @@
 #include "nodejscommunication.h"
 
-NodeJsCommunication::NodeJsCommunication(QString host,QObject *parent) : QObject(parent)
+NodeJsCommunication::NodeJsCommunication(QString host, int port, QObject *parent) : QObject(parent)
 {
     m_host = host;
+    m_port = port;
     m_connected = false;
 
     m_socket = new QTcpSocket(this);
@@ -44,7 +45,7 @@ void NodeJsCommunication::connectionChecker()
 
         this->setConnected(false);
 
-        m_socket->connectToHost(m_host,20001);
+        m_socket->connectToHost(m_host,m_port);
         m_socket->waitForConnected(500);
 
         if (m_socket->state() != QAbstractSocket::ConnectedState)

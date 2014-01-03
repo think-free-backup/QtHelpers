@@ -15,7 +15,7 @@ class NetworkManager : public NodeJsCommunication
 
     public:
 
-        explicit NetworkManager(QString host,QObject *parent = 0);
+        explicit NetworkManager(QString host, int port, QObject *parent = 0);
 
         // Propertie
 
