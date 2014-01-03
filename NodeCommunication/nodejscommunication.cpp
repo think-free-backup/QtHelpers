@@ -76,6 +76,7 @@ void NodeJsCommunication::serverRequest(QString request)
     QByteArray packet;
     packet.append(":::0:::");
     packet.append(request);
+    packet.append(":::1:::");
 
     m_socket->write(packet);
     m_socket->waitForBytesWritten();
