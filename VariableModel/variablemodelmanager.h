@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QHash>
+#include <QTimer>
 
 #include "../Log/log.h"
 
@@ -18,6 +19,7 @@ class VariableModelManager : public QObject
         QHash <QString,SystemVariable*> m_list;
         QHash <QString,SystemVariable*> m_localList;
         bool m_serverAvailable;
+        QTimer m_timer;
 
     public:
 

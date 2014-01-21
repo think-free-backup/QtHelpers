@@ -2,7 +2,8 @@
 
 VariableModelManager::VariableModelManager(QObject *parent) : QObject(parent)
 {
-
+    m_timer.setInterval(300000);
+    connect(&m_timer,SIGNAL(timeout()), this, SLOT(updateModel()));
 }
 
 /* Local variable */
@@ -181,7 +182,12 @@ void VariableModelManager::setServerAvailable(bool available)
 
     if (available){
 
+        m_timer.start();
         updateModel();
+    }
+    else{
+
+        m_timer.stop();
     }
 }
 
@@ -191,6 +197,7 @@ void VariableModelManager::setServerAvailable(bool available)
 
 void VariableModelManager::updateModel()
 {
+    log("Request full update of model");
 
     foreach (SystemVariable *var, m_list) {
 
