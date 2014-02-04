@@ -10,6 +10,7 @@ HeartbeatManager::HeartbeatManager(int queueSize, QObject *parent) : QObject(par
 void HeartbeatManager::start()
 {
     emit networkRequest("{\"type\" : \"HB-negotiation\", \"body\" : \"5000\"}");
+    m_hbQueue.clear();
     m_timer->start(3000);
 }
 
@@ -49,5 +50,6 @@ void HeartbeatManager::enqueue(QString uuid)
 
 void HeartbeatManager::validate(QString uuid)
 {
+    log("Validate heartbeat : " + uuid);
     m_hbQueue.takeAt(m_hbQueue.indexOf(uuid));
 }

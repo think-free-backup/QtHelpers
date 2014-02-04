@@ -59,6 +59,7 @@ void NetworkManager::tryLogin()
 
 void NetworkManager::processJson(QString json)
 {
+    log("Json received : " + json);
 
     // Parse main parts of the message (type and body)
 
