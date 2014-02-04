@@ -20,6 +20,7 @@ class VariableModelManager : public QObject
         QHash <QString,SystemVariable*> m_localList;
         bool m_serverAvailable;
         QTimer m_timer;
+        bool m_allowServerVariableCreation;
 
     public:
 
@@ -44,9 +45,9 @@ class VariableModelManager : public QObject
 
         void updateSystemVariable(QString name, QString filter, QVariant varContent);
         void setServerAvailable(bool available);
+        void setAllowServerVariableCreation(bool allow);
 
     private slots:
-
 
         void updateModel();
 };

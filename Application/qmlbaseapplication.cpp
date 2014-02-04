@@ -10,9 +10,10 @@ QmlBaseApplication::QmlBaseApplication(QString qmlfile, QString app, QWidget *pa
     m_viewer = new QmlDroidViewer();
     m_context = m_viewer->rootContext();
 
-    m_networkManager = new NetworkManager(m_osInfo->getSetting("serverIp", "127.0.0.1"), m_osInfo->getSetting("serverPort", "20001").toInt(),this);
+    m_networkManager = new NetworkManager(m_osInfo->getSetting("serverIp", "127.0.0.1").toString(), m_osInfo->getSetting("serverPort", "20001").toInt(),this);
 
     m_model = new VariableModelManager(this);
+        m_model->setAllowServerVariableCreation(m_osInfo->getSetting("allowServerVariableCreation", "true").toBool() );
         QObject::connect(m_networkManager, SIGNAL(loggedChanged(bool)), m_model, SLOT(setServerAvailable(bool)));
         QObject::connect(m_networkManager, SIGNAL(systemVariableChanged(QString,QString,QVariant)), m_model, SLOT(updateSystemVariable(QString,QString,QVariant)));
         QObject::connect(m_model, SIGNAL(requestVariable(QString,QString)), m_networkManager, SLOT(requestVariable(QString,QString)));

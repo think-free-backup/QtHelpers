@@ -2,8 +2,22 @@
 
 VariableModelManager::VariableModelManager(QObject *parent) : QObject(parent)
 {
+    m_allowServerVariableCreation = true;
+
     m_timer.setInterval(300000);
     connect(&m_timer,SIGNAL(timeout()), this, SLOT(updateModel()));
+}
+
+void VariableModelManager::setAllowServerVariableCreation(bool allow){
+
+    if (allow){
+        log("Allowing server variable creation");
+    }
+    else{
+        log("Disallowing server variable creation");
+    }
+
+    m_allowServerVariableCreation = allow;
 }
 
 /* Local variable */
@@ -166,11 +180,17 @@ void VariableModelManager::updateSystemVariable(QString name, QString filter, QV
     }
     else{
 
-        log("WARNING : Creating variable from server : " + name);
+        if (m_allowServerVariableCreation){
 
-        m_list.insert(name, new SystemVariable(name, varContent, filter,this));
+            log("WARNING : Creating variable from server : " + name);
+
+            m_list.insert(name, new SystemVariable(name, varContent, filter,this));
+        }
     }
 }
+
+/* Server available */
+/* ********************************************************************************************************** */
 
 /*!
  * \brief VariableModelManager::setServerAvailable : Modify the status of the server
@@ -192,6 +212,9 @@ void VariableModelManager::setServerAvailable(bool available)
         m_timer.stop();
     }
 }
+
+/* Model full update */
+/* ********************************************************************************************************** */
 
 /*!
  * \brief VariableModelManager::updateModel : Update the entire model
