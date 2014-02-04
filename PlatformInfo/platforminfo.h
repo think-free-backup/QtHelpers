@@ -39,7 +39,7 @@ class PlatformInfo : public QObject
 
         bool tactileScreen() const {return m_tactileScreen;}
 
-        QString getSetting(QString key, QString deflt);
+        Q_INVOKABLE QString getSetting(QString key, QString deflt);
 
     public slots:
 
