@@ -156,11 +156,13 @@ void VariableModelManager::updateSystemVariable(QString name, QString filter, QV
 
         if (str->option() == filter){
 
+            log("Setting variable : " + name);
             str->setVariable(varContent);
         }
         else{
 
-            log("Filters doesn't match the request, aborting");        }
+            log("Filters doesn't match the request, aborting");
+        }
     }
     else{
 
@@ -197,7 +199,7 @@ void VariableModelManager::setServerAvailable(bool available)
 
 void VariableModelManager::updateModel()
 {
-    log("Request full update of model");
+    log("Requesting full update of model");
 
     foreach (SystemVariable *var, m_list) {
 
