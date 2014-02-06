@@ -6,8 +6,7 @@ NodeJsCommunication::NodeJsCommunication(QString host, int port, QObject *parent
     m_port = port;
     m_connected = false;
 
-    m_socket = new QTcpSocket(this);
-    connect(m_socket,SIGNAL(readyRead()),this,SLOT(messageReceived()));
+    this->createSocket();
 
     m_connectionCheckerTimer = new QTimer(this);
     connect(m_connectionCheckerTimer, SIGNAL(timeout()), this, SLOT(connectionChecker()));
@@ -24,16 +23,27 @@ bool NodeJsCommunication::connected() const
 
 void NodeJsCommunication::setConnected(bool arg)
 {
-    m_connected = arg;
+    if (m_connected != arg){
 
-    emit connectedChanged(arg);
+        m_connected = arg;
 
-    if (arg)
-        emit serverConnected();
-    else
-        emit serverDisconnected();
+        emit connectedChanged(arg);
+
+        if (arg)
+            emit serverConnected();
+        else
+            emit serverDisconnected();
+    }
 }
 
+
+// Socket creation
+
+void NodeJsCommunication::createSocket(){
+
+    m_socket = new QTcpSocket(this);
+    connect(m_socket,SIGNAL(readyRead()),this,SLOT(messageReceived()));
+}
 
 // Connection checked : Ensure we are connected to server (Check that the socker is opened and try to open it if not)
 
@@ -67,6 +77,9 @@ void NodeJsCommunication::forceDisconnect()
 {
     log("Forcing disconnection");
     m_socket->disconnectFromHost();
+
+    m_socket->deleteLater();
+    this->createSocket();
 }
 
 

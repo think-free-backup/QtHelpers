@@ -57,6 +57,7 @@ class NodeJsCommunication : public QObject
 
     private slots:
 
+        void createSocket();
         void messageReceived();
         void connectionChecker();
         void forceDisconnect();
