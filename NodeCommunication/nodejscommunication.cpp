@@ -56,7 +56,7 @@ void NodeJsCommunication::connectionChecker()
         this->setConnected(false);
 
         m_socket->connectToHost(m_host,m_port);
-        m_socket->waitForConnected(500);
+        m_socket->waitForConnected(2500);
 
         if (m_socket->state() != QAbstractSocket::ConnectedState)
         {

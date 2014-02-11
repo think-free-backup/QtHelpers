@@ -15,7 +15,7 @@ PlatformInfo::PlatformInfo(QString app,QObject *parent) : QObject(parent)
     #endif
     #ifdef Q_OS_WIN
         OS = "Windows";
-        STORAGEPATH = "/" + QDir::homePath ();
+        STORAGEPATH = QDir::homePath ();
         TACTIL = false;
     #endif
     #ifdef Q_OS_MAC
