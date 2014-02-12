@@ -55,12 +55,15 @@ void NodeJsCommunication::connectionChecker()
 
         this->setConnected(false);
 
+        m_socket->deleteLater();
+        this->createSocket();
+
         m_socket->connectToHost(m_host,m_port);
         m_socket->waitForConnected(2500);
 
         if (m_socket->state() != QAbstractSocket::ConnectedState)
         {
-            //log("Can't connect to server");
+            log("Can't connect to server");
 
             this->setConnected(false);
         }
@@ -76,10 +79,9 @@ void NodeJsCommunication::connectionChecker()
 void NodeJsCommunication::forceDisconnect()
 {
     log("Forcing disconnection");
-    m_socket->disconnectFromHost();
 
-    m_socket->deleteLater();
-    this->createSocket();
+    this->setConnected(false);
+    m_socket->disconnectFromHost();
 }
 
 
