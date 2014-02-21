@@ -18,7 +18,7 @@ PlatformInfo::PlatformInfo(QString app,QObject *parent) : QObject(parent)
         STORAGEPATH = QDir::homePath ();
         TACTIL = false;
     #endif
-    #ifdef Q_OS_MAC
+    #ifdef Q_OS_MACX
         OS = "Mac";
         STORAGEPATH = QDir::homePath ();
         TACTIL = false;
@@ -28,7 +28,12 @@ PlatformInfo::PlatformInfo(QString app,QObject *parent) : QObject(parent)
         STORAGEPATH = getenv("EXTERNAL_STORAGE");
         TACTIL = true;
     #endif
-
+    #ifdef Q_OS_IOS
+        OS = "IOS";
+        QString cur_dir = QDir::currentPath();
+        STORAGEPATH = cur_dir.left( cur_dir.lastIndexOf( "/" ) + 1 ).append("Documents");
+        TACTIL = true;
+    #endif
     // Create storage folder if doesn't exists
 
     STORAGEPATH.append("/.");
