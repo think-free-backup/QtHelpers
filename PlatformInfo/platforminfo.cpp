@@ -56,3 +56,21 @@ QVariant PlatformInfo::getSetting(QString key, QString deflt){
     settings = new QSettings( storagePath() + "config.ini", QSettings::IniFormat );
     return settings->value( key, deflt);
 }
+
+void PlatformInfo::notify(QString message){
+
+    //Q_UNUSED(message)
+
+    #if defined(QT_ANDROIDEXTRAS_LIB)
+
+    log("Updating notification");
+
+    QAndroidJniObject javaNotification = QAndroidJniObject::fromString(message);
+
+    QAndroidJniObject::callStaticMethod<void>(
+                                 "org/qtproject/qt5/android/bindings/QtService",
+                                 "notify",
+                                 "(Ljava/lang/String;)V",
+                                 javaNotification.object<jstring>());
+    #endif
+}

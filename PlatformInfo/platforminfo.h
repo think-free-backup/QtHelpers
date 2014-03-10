@@ -6,9 +6,13 @@
 #include <QDir>
 #include <QSettings>
 
-#include "../Log/log.h"
+#if defined(QT_ANDROIDEXTRAS_LIB)
+    #include <QtAndroidExtras/QAndroidJniObject>
+#endif
 
 #include <stdlib.h>
+
+#include "../Log/log.h"
 
 class PlatformInfo : public QObject
 {
@@ -50,6 +54,8 @@ class PlatformInfo : public QObject
                 emit orientationPortraitChanged(arg);
             }
         }
+
+        void notify(QString message);
 
     signals:
 
