@@ -24,12 +24,10 @@ class PlatformInfo : public QObject
     Q_PROPERTY(bool tactileScreen READ tactileScreen NOTIFY tactileScreenChanged)
 
     QString m_platform;
-
     QString m_storagePath;
-
     bool m_orientationPortrait;
-
     bool m_tactileScreen;
+    QString m_package;
 
     public:
 
@@ -56,6 +54,7 @@ class PlatformInfo : public QObject
         }
 
         void notify(QString message);
+        void setPackage(QString package);
 
     signals:
 

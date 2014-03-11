@@ -2,6 +2,8 @@
 
 PlatformInfo::PlatformInfo(QString app,QObject *parent) : QObject(parent)
 {
+    m_package = "";
+
     // Define platform variables
 
     QString OS;
@@ -59,18 +61,21 @@ QVariant PlatformInfo::getSetting(QString key, QString deflt){
 
 void PlatformInfo::notify(QString message){
 
-    //Q_UNUSED(message)
+    Q_UNUSED(message)
 
     #if defined(QT_ANDROIDEXTRAS_LIB)
 
-    log("Updating notification");
+        QAndroidJniObject javaNotification = QAndroidJniObject::fromString(message);
 
-    QAndroidJniObject javaNotification = QAndroidJniObject::fromString(message);
-
-    QAndroidJniObject::callStaticMethod<void>(
-                                 "org/qtproject/qt5/android/bindings/QtService",
-                                 "notify",
-                                 "(Ljava/lang/String;)V",
-                                 javaNotification.object<jstring>());
+        QAndroidJniObject::callStaticMethod<void>(
+                                     m_package.toUtf8(),
+                                     "notify",
+                                     "(Ljava/lang/String;)V",
+                                     javaNotification.object<jstring>());
     #endif
+}
+
+void PlatformInfo::setPackage(QString package){
+
+    m_package = package;
 }
