@@ -25,6 +25,8 @@ class QmlBaseApplication : public QWidget
         void show(int w = 1000, int h = 600);
         QQmlContext *getContext();
         void setContextProperty(const QString &name, QObject * value);
+        void setPackage(QString package);
+        void setConnected(bool connected);
 
     private:
 

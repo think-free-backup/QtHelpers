@@ -15,6 +15,7 @@ QmlBaseApplication::QmlBaseApplication(QString qmlfile, QString app, QWidget *pa
     m_model = new VariableModelManager(this);
         m_model->setAllowServerVariableCreation(m_osInfo->getSetting("allowServerVariableCreation", "true").toBool() );
         QObject::connect(m_networkManager, SIGNAL(loggedChanged(bool)), m_model, SLOT(setServerAvailable(bool)));
+        QObject::connect(m_networkManager, SIGNAL(loggedChanged(bool)), this, SLOT(setConnected(bool)));
         QObject::connect(m_networkManager, SIGNAL(systemVariableChanged(QString,QString,QVariant)), m_model, SLOT(updateSystemVariable(QString,QString,QVariant)));
         QObject::connect(m_model, SIGNAL(requestVariable(QString,QString)), m_networkManager, SLOT(requestVariable(QString,QString)));
         QObject::connect(m_model, SIGNAL(releaseVariable(QString)), m_networkManager, SLOT(releaseVariable(QString)));
@@ -47,4 +48,19 @@ QQmlContext * QmlBaseApplication::getContext(){
 void QmlBaseApplication::setContextProperty(const QString &name, QObject *value)
 {
      m_context->setContextProperty(name, value);
+}
+
+void QmlBaseApplication::setPackage(QString package){
+
+    m_osInfo->setPackage(package);
+
+    setConnected(m_networkManager->logged());
+}
+
+void QmlBaseApplication::setConnected(bool connected){
+
+    if (connected)
+        m_osInfo->notify("Connected");
+    else
+        m_osInfo->notify("Not connected");
 }
