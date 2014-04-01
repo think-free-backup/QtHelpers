@@ -3,6 +3,7 @@
 PlatformInfo::PlatformInfo(QString app,QObject *parent) : QObject(parent)
 {
     m_package = "";
+    m_tactileScreen = false;
 
     // Define platform variables
 
@@ -56,7 +57,18 @@ QVariant PlatformInfo::getSetting(QString key, QString deflt){
 
     QSettings * settings = 0;
     settings = new QSettings( storagePath() + "config.ini", QSettings::IniFormat );
-    return settings->value( key, deflt);
+    QVariant v = settings->value( key, deflt);
+    delete settings;
+
+    return v;
+}
+
+void PlatformInfo::setSetting(QString key, QVariant value){
+
+    QSettings *settings = 0;
+    settings = new QSettings( storagePath() + "config.ini", QSettings::IniFormat );
+    settings->setValue(key,value);
+    delete settings;
 }
 
 void PlatformInfo::notify(QString message){

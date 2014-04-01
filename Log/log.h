@@ -24,4 +24,14 @@ class Log : public QObject
 
 #define log(text) Log::write(Q_FUNC_INFO, text);
 
+#ifdef LOGDEBUG
+
+    #define dbg(text) Log::write(Q_FUNC_INFO, text);
+
+#else
+
+    #define dbg(text);
+
+#endif
+
 #endif // LOG_H
