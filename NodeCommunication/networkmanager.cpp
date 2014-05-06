@@ -108,7 +108,7 @@ void NetworkManager::processJson(QString json)
     }
     else{
 
-        log("Unkown message received : " + json);
+        dbg("Unkown message received : " + json);
         emit jsonReceived(type, body);
     }
 }

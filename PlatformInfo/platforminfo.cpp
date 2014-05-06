@@ -53,7 +53,7 @@ PlatformInfo::PlatformInfo(QString app,QObject *parent) : QObject(parent)
     setStoragePath(STORAGEPATH);
 }
 
-QVariant PlatformInfo::getSetting(QString key, QString deflt){
+QVariant PlatformInfo::getSetting(QString key, QVariant deflt){
 
     QSettings * settings = 0;
     settings = new QSettings( storagePath() + "config.ini", QSettings::IniFormat );
