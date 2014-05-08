@@ -1,6 +1,6 @@
 #include "networkmanager.h"
 
-NetworkManager::NetworkManager(QString host, int port, QObject *parent) : NodeJsCommunication(host, port, parent)
+NetworkManager::NetworkManager(QString host, int port, QObject *parent) : JsonCommunication(host, port, parent)
 {
     m_logged = false;
 
@@ -69,7 +69,7 @@ void NetworkManager::processJson(QString json)
 
     // Routing messages by type
 
-    if ( type == "HB-ACK" ){
+    if ( type == "hbAck" ){
 
         emit hearthbeatReceived(body.toString());
     }
@@ -108,8 +108,8 @@ void NetworkManager::processJson(QString json)
     }
     else{
 
-        dbg("Unkown message received : " + json);
         emit jsonReceived(type, body);
+        emit jsonStringReceived(json);
     }
 }
 

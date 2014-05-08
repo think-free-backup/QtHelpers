@@ -1,12 +1,12 @@
 #ifndef NETWORKMANAGER_H
 #define NETWORKMANAGER_H
 
-#include "nodejscommunication.h"
+#include "jsoncommunication.h"
 #include "heartbeatmanager.h"
 
 #include "../Log/log.h"
 
-class NetworkManager : public NodeJsCommunication
+class NetworkManager : public JsonCommunication
 {
     Q_OBJECT
 
@@ -34,6 +34,7 @@ class NetworkManager : public NodeJsCommunication
         void callRequest(QString module, QString fct, QString param);
         void hearthbeatReceived(QString hearthbeat);
         void jsonReceived(QString type, QJsonValue body);
+        void jsonStringReceived(QString json);
 
         // Propertie
 

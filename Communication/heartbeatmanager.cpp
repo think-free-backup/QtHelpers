@@ -9,7 +9,7 @@ HeartbeatManager::HeartbeatManager(int queueSize, QObject *parent) : QObject(par
 
 void HeartbeatManager::start()
 {
-    emit networkRequest("{\"type\" : \"HB-negotiation\", \"body\" : \"5000\"}");
+    emit networkRequest("{\"type\" : \"hbNegotiation\", \"body\" : \"5000\"}");
     m_hbQueue.clear();
     m_timer->start(3000);
 }
@@ -31,7 +31,7 @@ void HeartbeatManager::sendHeartbeat()
 {
     QString uuid = QUuid::createUuid().toString().replace("{","").replace("}","");
     enqueue(uuid);
-    emit networkRequest("{\"type\" : \"HB\", \"body\" : \"" + uuid + "\"}");
+    emit networkRequest("{\"type\" : \"hb\", \"body\" : \"" + uuid + "\"}");
 }
 
 void HeartbeatManager::enqueue(QString uuid)

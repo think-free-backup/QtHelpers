@@ -14,7 +14,7 @@
 
 #include "../Log/log.h"
 
-class NodeJsCommunication : public QObject
+class JsonCommunication : public QObject
 {
     Q_OBJECT
 
@@ -22,7 +22,7 @@ class NodeJsCommunication : public QObject
 
     public:
 
-        explicit NodeJsCommunication(QString host,int port, QObject *parent = 0);
+        explicit JsonCommunication(QString host,int port, QObject *parent = 0);
 
         // Properties
 

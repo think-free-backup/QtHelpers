@@ -1,6 +1,6 @@
-#include "nodejscommunication.h"
+#include "jsoncommunication.h"
 
-NodeJsCommunication::NodeJsCommunication(QString host, int port, QObject *parent) : QObject(parent)
+JsonCommunication::JsonCommunication(QString host, int port, QObject *parent) : QObject(parent)
 {
     m_host = host;
     m_port = port;
@@ -16,12 +16,12 @@ NodeJsCommunication::NodeJsCommunication(QString host, int port, QObject *parent
 
 // Properties
 
-bool NodeJsCommunication::connected() const
+bool JsonCommunication::connected() const
 {
     return m_connected;
 }
 
-void NodeJsCommunication::setConnected(bool arg)
+void JsonCommunication::setConnected(bool arg)
 {
     if (m_connected != arg){
 
@@ -39,7 +39,7 @@ void NodeJsCommunication::setConnected(bool arg)
 
 // Socket creation
 
-void NodeJsCommunication::createSocket(){
+void JsonCommunication::createSocket(){
 
     m_socket = new QTcpSocket(this);
     connect(m_socket,SIGNAL(readyRead()),this,SLOT(messageReceived()));
@@ -47,12 +47,10 @@ void NodeJsCommunication::createSocket(){
 
 // Connection checked : Ensure we are connected to server (Check that the socker is opened and try to open it if not)
 
-void NodeJsCommunication::connectionChecker()
+void JsonCommunication::connectionChecker()
 {
     if (m_socket->state() != QAbstractSocket::ConnectedState)
     {
-        //log("Client is not connected");
-
         this->setConnected(false);
 
         m_socket->deleteLater();
@@ -76,7 +74,7 @@ void NodeJsCommunication::connectionChecker()
     }
 }
 
-void NodeJsCommunication::forceDisconnect()
+void JsonCommunication::forceDisconnect()
 {
     log("Forcing disconnection");
 
@@ -87,8 +85,10 @@ void NodeJsCommunication::forceDisconnect()
 
 // Send / receive messages
 
-void NodeJsCommunication::serverRequest(QString request)
+void JsonCommunication::serverRequest(QString request)
 {
+    dbg("\e[31mSending to socket : " + request + "\e[0m");
+
     QByteArray packet;
     packet.append(":::0:::");
     packet.append(request);
@@ -100,7 +100,7 @@ void NodeJsCommunication::serverRequest(QString request)
     // log("Requesting to server : " + request);
 }
 
-void NodeJsCommunication::messageReceived()
+void JsonCommunication::messageReceived()
 {
     QByteArray datagram = m_socket->readAll();
 
@@ -114,7 +114,11 @@ void NodeJsCommunication::messageReceived()
 
             if (data.contains(":::1:::")){
 
-                emit jsonReceived(data.remove(":::1:::"));
+                QString mes = data.remove(":::1:::");
+
+                dbg("\e[32m" + mes +"\e[0m");
+
+                emit jsonReceived(mes);
             }
             else{
 

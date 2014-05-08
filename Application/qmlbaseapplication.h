@@ -6,7 +6,7 @@
 #include <QQmlContext>
 
 #include "../QmlViewer/qmldroidviewer.h"
-#include "../NodeCommunication/networkmanager.h"
+#include "../Communication/networkmanager.h"
 #include "../VariableModel/variablemodelmanager.h"
 #include "../VariableModel/systemvariable.h"
 #include "../PlatformInfo/platforminfo.h"
