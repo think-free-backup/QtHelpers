@@ -9,7 +9,7 @@ HeartbeatManager::HeartbeatManager(int queueSize, QObject *parent) : QObject(par
 
 void HeartbeatManager::start()
 {
-    emit networkRequest("{\"type\" : \"hbNegotiation\", \"body\" : \"5000\"}");
+    //emit networkRequest("{\"type\" : \"hbNegotiation\", \"body\" : \"5000\"}");
     m_hbQueue.clear();
     m_timer->start(3000);
 }
@@ -38,7 +38,7 @@ void HeartbeatManager::enqueue(QString uuid)
 {
     if (m_hbQueue.length() == m_queueSize){
 
-        log("Queue is full");
+        log("Heartbeat queue is full");
         emit queueFull();
         m_hbQueue.clear();
     }
@@ -50,6 +50,5 @@ void HeartbeatManager::enqueue(QString uuid)
 
 void HeartbeatManager::validate(QString uuid)
 {
-    log("Validate heartbeat : " + uuid);
     m_hbQueue.takeAt(m_hbQueue.indexOf(uuid));
 }
