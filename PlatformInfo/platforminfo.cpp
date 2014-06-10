@@ -43,9 +43,6 @@ PlatformInfo::PlatformInfo(QString app,QObject *parent) : QObject(parent)
     STORAGEPATH.append(app);
     STORAGEPATH.append("/");
 
-    QDir dir;
-    dir.mkdir(STORAGEPATH);
-
     // Set platform variables
 
     setPlatform(OS);
@@ -73,8 +70,6 @@ void PlatformInfo::setSetting(QString key, QVariant value){
 
 void PlatformInfo::notify(QString message){
 
-    Q_UNUSED(message)
-
     #if defined(QT_ANDROIDEXTRAS_LIB)
 
         QAndroidJniObject javaNotification = QAndroidJniObject::fromString(message);
@@ -84,6 +79,11 @@ void PlatformInfo::notify(QString message){
                                      "notify",
                                      "(Ljava/lang/String;)V",
                                      javaNotification.object<jstring>());
+
+    #else
+
+        Q_UNUSED(message)
+
     #endif
 }
 

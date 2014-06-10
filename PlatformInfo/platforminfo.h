@@ -54,6 +54,17 @@ class PlatformInfo : public QObject
             }
         }
 
+        void setStoragePath(QString arg)
+        {
+            if (m_storagePath != arg) {
+
+                QDir dir;
+                dir.mkdir(m_storagePath);
+                m_storagePath = arg;
+                emit storagePathChanged(arg);
+            }
+        }
+
         void notify(QString message);
         void setPackage(QString package);
 
@@ -74,14 +85,6 @@ class PlatformInfo : public QObject
             if (m_platform != arg) {
                 m_platform = arg;
                 emit platformChanged(arg);
-            }
-        }
-
-        void setStoragePath(QString arg)
-        {
-            if (m_storagePath != arg) {
-                m_storagePath = arg;
-                emit storagePathChanged(arg);
             }
         }
 
