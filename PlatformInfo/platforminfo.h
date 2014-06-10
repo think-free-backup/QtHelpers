@@ -56,7 +56,7 @@ class PlatformInfo : public QObject
 
         void setStoragePath(QString arg)
         {
-            if (m_storagePath != arg) {
+            if (m_storagePath != arg && m_storagePath != "") {
 
                 QDir dir;
                 dir.mkdir(m_storagePath);
