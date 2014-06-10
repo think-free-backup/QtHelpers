@@ -87,7 +87,7 @@ void JsonCommunication::forceDisconnect()
 
 void JsonCommunication::serverRequest(QString request)
 {
-    dbg("\e[31mSending to socket : " + request + "\e[0m");
+    dbgc("Sending to socket : " + request, "2");
 
     QByteArray packet;
     packet.append(":::0:::");
@@ -116,7 +116,7 @@ void JsonCommunication::messageReceived()
 
                 QString mes = data.remove(":::1:::");
 
-                dbg("\e[32m" + mes +"\e[0m");
+                dbgc(mes ,"1");
 
                 emit jsonReceived(mes);
             }
