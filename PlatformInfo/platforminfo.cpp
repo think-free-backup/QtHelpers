@@ -63,6 +63,8 @@ QVariant PlatformInfo::getSetting(QString key, QVariant deflt){
 void PlatformInfo::setSetting(QString key, QVariant value){
 
     QSettings *settings = 0;
+
+    qDebug() << "Loading config from : " << storagePath();
     settings = new QSettings( storagePath() + "config.ini", QSettings::IniFormat );
     settings->setValue(key,value);
     delete settings;
