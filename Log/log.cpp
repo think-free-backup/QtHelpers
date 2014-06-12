@@ -19,6 +19,7 @@ void Log::write(QString function, QString log)
 void Log::write_color(QString function, QString log, QString color){
 
     #ifdef Q_OS_WIN
+        Q_UNUSED(color)
         Log::write(function, log);
     #else
         Log::write(function, "\e[38;5;" + color + "m" + log + "\e[0m");
