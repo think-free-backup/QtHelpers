@@ -51,9 +51,12 @@ PlatformInfo::PlatformInfo(QString app,QObject *parent) : QObject(parent)
 }
 
 QVariant PlatformInfo::getSetting(QString key, QVariant deflt){
-
+    QString filePath = configFilePath();
+    if (filePath.isEmpty())
+       filePath = storagePath() + "config.ini";
+    qDebug() << "Loading config from : " << filePath;
     QSettings * settings = 0;
-    settings = new QSettings( storagePath() + "config.ini", QSettings::IniFormat );
+    settings = new QSettings( filePath , QSettings::IniFormat );
     QVariant v = settings->value( key, deflt);
     delete settings;
 
@@ -64,8 +67,12 @@ void PlatformInfo::setSetting(QString key, QVariant value){
 
     QSettings *settings = 0;
 
-    qDebug() << "Loading config from : " << storagePath();
-    settings = new QSettings( storagePath() + "config.ini", QSettings::IniFormat );
+    QString filePath = configFilePath();
+    if (filePath.isEmpty())
+       filePath = storagePath() + "config.ini";
+
+    qDebug() << "Loading config from : " << filePath;
+    settings = new QSettings( storagePath() + filePath, QSettings::IniFormat );
     settings->setValue(key,value);
     delete settings;
 }

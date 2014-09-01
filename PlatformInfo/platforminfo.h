@@ -20,11 +20,13 @@ class PlatformInfo : public QObject
 
     Q_PROPERTY(QString platform READ platform NOTIFY platformChanged)
     Q_PROPERTY(QString storagePath READ storagePath NOTIFY storagePathChanged)
+    Q_PROPERTY(QString configFilePath READ configFilePath NOTIFY configFilePathChanged)
     Q_PROPERTY(bool orientationPortrait READ orientationPortrait WRITE setOrientationPortrait NOTIFY orientationPortraitChanged)
     Q_PROPERTY(bool tactileScreen READ tactileScreen NOTIFY tactileScreenChanged)
 
     QString m_platform;
     QString m_storagePath;
+    QString m_configFilePath;
     bool m_orientationPortrait;
     bool m_tactileScreen;
     QString m_package;
@@ -36,6 +38,8 @@ class PlatformInfo : public QObject
         QString platform() const {return m_platform;}
 
         QString storagePath() const {return m_storagePath;}
+
+        QString configFilePath() const {return m_configFilePath;}
 
         bool orientationPortrait() const {return m_orientationPortrait;}
 
@@ -65,6 +69,14 @@ class PlatformInfo : public QObject
             }
         }
 
+        void setConfigFilePath(QString arg)
+        {
+            if (m_configFilePath != arg && arg != "") {
+                m_configFilePath = arg;
+                emit configFilePathChanged(arg);
+            }
+        }
+
         void notify(QString message);
         void setPackage(QString package);
 
@@ -73,6 +85,8 @@ class PlatformInfo : public QObject
         void platformChanged(QString arg);
 
         void storagePathChanged(QString arg);
+
+        void configFilePathChanged(QString arg);
 
         void orientationPortraitChanged(bool arg);
 
