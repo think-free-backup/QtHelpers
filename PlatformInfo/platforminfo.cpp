@@ -54,7 +54,6 @@ QVariant PlatformInfo::getSetting(QString key, QVariant deflt){
     QString filePath = configFilePath();
     if (filePath.isEmpty())
        filePath = storagePath() + "config.ini";
-    qDebug() << "Loading config from : " << filePath;
     QSettings * settings = 0;
     settings = new QSettings( filePath , QSettings::IniFormat );
     QVariant v = settings->value( key, deflt);
