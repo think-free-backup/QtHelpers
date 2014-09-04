@@ -71,7 +71,6 @@ void PlatformInfo::setSetting(QString key, QVariant value){
     if (filePath.isEmpty())
        filePath = storagePath() + "config.ini";
 
-    qDebug() << "Loading config from : " << filePath;
     settings = new QSettings( storagePath() + filePath, QSettings::IniFormat );
     settings->setValue(key,value);
     delete settings;
