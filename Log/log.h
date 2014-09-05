@@ -14,13 +14,8 @@ class Log : public QObject
 
         explicit Log(QObject *parent = 0);
 
-    signals:
-
-    public slots:
-
         static void write(QString function,  QString log);
         static void write_color(QString function,  QString log , QString color);
-    
 };
 
 // Log macros
