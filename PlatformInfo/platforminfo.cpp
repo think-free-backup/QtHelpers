@@ -70,8 +70,10 @@ void PlatformInfo::setSetting(QString key, QVariant value){
     if (filePath.isEmpty())
        filePath = storagePath() + "config.ini";
 
-    settings = new QSettings( storagePath() + filePath, QSettings::IniFormat );
+    settings = new QSettings( filePath, QSettings::IniFormat );
     settings->setValue(key,value);
+    settings->sync();
+
     delete settings;
 }
 
