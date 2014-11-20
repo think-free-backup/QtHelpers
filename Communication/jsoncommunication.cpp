@@ -94,8 +94,15 @@ void JsonCommunication::serverRequest(QString request)
     packet.append(request);
     packet.append(":::1:::");
 
-    m_socket->write(packet);
-    m_socket->waitForBytesWritten();
+    if (m_socket->state() == QTcpSocket::ConnectedState){
+
+        m_socket->write(packet);
+        //m_socket->waitForBytesWritten();
+    }
+    else{
+
+        forceDisconnect();
+    }
 
     // log("Requesting to server : " + request);
 }

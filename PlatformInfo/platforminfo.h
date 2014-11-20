@@ -7,7 +7,7 @@
 #include <QSettings>
 
 #if defined(QT_ANDROIDEXTRAS_LIB)
-    #include <QtAndroidExtras/QAndroidJniObject>
+    #include <QAndroidJniObject>
 #endif
 
 #include <stdlib.h>
@@ -79,6 +79,7 @@ class PlatformInfo : public QObject
 
         void notify(QString message);
         void setPackage(QString package);
+        static void notify(QString message, QString package);
 
     signals:
 

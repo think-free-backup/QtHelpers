@@ -33,7 +33,7 @@ class Log : public QObject
 #else
 
     #define dbg(text);
-    #define dbgc(text);
+    #define dbgc(text, color);
 
 #endif
 
