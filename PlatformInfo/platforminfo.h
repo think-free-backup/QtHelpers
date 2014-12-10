@@ -79,7 +79,7 @@ class PlatformInfo : public QObject
 
         void notify(QString message);
         void setPackage(QString package);
-        static void notify(QString message, QString package);
+        static void notify(QString message, QString package, int priority = 0);
 
     signals:
 

@@ -42,6 +42,7 @@ void JsonCommunication::setConnected(bool arg)
 void JsonCommunication::createSocket(){
 
     m_socket = new QTcpSocket(this);
+    m_socket->setSocketOption(QAbstractSocket::LowDelayOption , 1);
     connect(m_socket,SIGNAL(readyRead()),this,SLOT(messageReceived()));
 }
 

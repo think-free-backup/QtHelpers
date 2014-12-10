@@ -87,7 +87,7 @@ void PlatformInfo::setPackage(QString package){
     m_package = package;
 }
 
-void PlatformInfo::notify(QString message, QString package){
+void PlatformInfo::notify(QString message, QString package, int priority){
 
     #if defined(QT_ANDROIDEXTRAS_LIB)
 
@@ -96,12 +96,13 @@ void PlatformInfo::notify(QString message, QString package){
         QAndroidJniObject::callStaticMethod<void>(
                                      package.toUtf8(),
                                      "notify",
-                                     "(Ljava/lang/String;)V",
-                                     javaNotification.object<jstring>());
+                                     "(Ljava/lang/String;I)V",
+                                     javaNotification.object<jstring>(), priority);
 
     #else
 
         Q_UNUSED(package)
+        Q_UNUSED(priority)
 
         log("Notification : " + message);
 
