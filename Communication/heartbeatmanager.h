@@ -13,7 +13,7 @@ class HeartbeatManager : public QObject
     Q_OBJECT
 
     public:
-        explicit HeartbeatManager(int queueSize,QObject *parent = 0);
+        explicit HeartbeatManager(int queueSize = 3, int interval = 3000, QObject *parent = 0);
 
     signals:
         void queueFull();
@@ -29,6 +29,7 @@ class HeartbeatManager : public QObject
         QTimer *m_timer;
         int m_queueSize;
         QQueue<QString> m_hbQueue;
+        int m_inteval;
     
     private slots:
         void sendHeartbeat();

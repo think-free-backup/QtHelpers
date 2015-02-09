@@ -1,17 +1,18 @@
 #include "heartbeatmanager.h"
 
-HeartbeatManager::HeartbeatManager(int queueSize, QObject *parent) : QObject(parent)
+HeartbeatManager::HeartbeatManager(int queueSize, int interval, QObject *parent) : QObject(parent)
 {
     m_queueSize = queueSize;
+    m_inteval = interval;
     m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(sendHeartbeat()));
 }
 
 void HeartbeatManager::start()
 {
-    //emit networkRequest("{\"type\" : \"hbNegotiation\", \"body\" : \"5000\"}");
+    emit networkRequest("{\"type\" : \"hbNegotiation\", \"body\" : \"" + QString::number(m_inteval * 2) + "\"}");
     m_hbQueue.clear();
-    m_timer->start(3000);
+    m_timer->start(m_inteval);
 }
 
 void HeartbeatManager::stop()
@@ -36,19 +37,24 @@ void HeartbeatManager::sendHeartbeat()
 
 void HeartbeatManager::enqueue(QString uuid)
 {
-    if (m_hbQueue.length() == m_queueSize){
+    if (m_queueSize != 0){
 
-        log("Heartbeat queue is full");
-        emit queueFull();
-        m_hbQueue.clear();
-    }
-    else{
+        if (m_hbQueue.length() == m_queueSize){
 
-        m_hbQueue.enqueue(uuid);
+            log("Heartbeat queue is full");
+            emit queueFull();
+            m_hbQueue.clear();
+        }
+        else{
+
+            m_hbQueue.enqueue(uuid);
+        }
     }
 }
 
 void HeartbeatManager::validate(QString uuid)
 {
-    m_hbQueue.takeAt(m_hbQueue.indexOf(uuid));
+    if (m_queueSize != 0){
+        m_hbQueue.takeAt(m_hbQueue.indexOf(uuid));
+    }
 }

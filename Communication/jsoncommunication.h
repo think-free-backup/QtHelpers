@@ -31,7 +31,6 @@ class JsonCommunication : public QObject
 
     signals:
 
-
         void jsonReceived(QString json);
 
         // Properties
@@ -43,6 +42,7 @@ class JsonCommunication : public QObject
     public slots:
 
         Q_INVOKABLE void serverRequest(QString request);
+        Q_INVOKABLE void forceDisconnect();
 
     private:
 
@@ -60,7 +60,6 @@ class JsonCommunication : public QObject
         void createSocket();
         void messageReceived();
         void connectionChecker();
-        void forceDisconnect();
 
         // Properties
         void setConnected(bool arg);
