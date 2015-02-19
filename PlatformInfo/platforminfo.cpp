@@ -104,7 +104,7 @@ void PlatformInfo::notify(QString message, QString package, int priority){
         Q_UNUSED(package)
         Q_UNUSED(priority)
 
-        log("Notification : " + message);
+        logm("Notification : " + message);
 
     #endif
 }

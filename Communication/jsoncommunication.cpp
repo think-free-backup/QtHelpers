@@ -62,13 +62,13 @@ void JsonCommunication::connectionChecker()
 
         if (m_socket->state() != QAbstractSocket::ConnectedState)
         {
-            log("Can't connect to server");
+            logm("Can't connect to server");
 
             this->setConnected(false);
         }
         else
         {
-            log("Client is now connected");
+            logm("Client is now connected");
 
             this->setConnected(true);
         }
@@ -77,7 +77,7 @@ void JsonCommunication::connectionChecker()
 
 void JsonCommunication::forceDisconnect()
 {
-    log("Forcing disconnection");
+    logm("Forcing disconnection");
 
     this->setConnected(false);
     m_socket->disconnectFromHost();
@@ -124,7 +124,7 @@ void JsonCommunication::messageReceived()
 
                 QString mes = data.remove(":::1:::");
 
-                dbgc(mes ,"1");
+                dbgc("Received from server : " + mes ,"1");
 
                 emit jsonReceived(mes);
             }

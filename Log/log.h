@@ -20,7 +20,7 @@ class Log : public QObject
 
 // Log macros
 
-#define log(text) Log::write(Q_FUNC_INFO, text);
+#define logm(text) Log::write(Q_FUNC_INFO, text);
 #define logc(text, color) Log::write_color(Q_FUNC_INFO, text, color);
 
 // Debug macros

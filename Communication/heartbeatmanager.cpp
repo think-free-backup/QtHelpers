@@ -1,6 +1,6 @@
 #include "heartbeatmanager.h"
 
-HeartbeatManager::HeartbeatManager(int queueSize, int interval, QObject *parent) : QObject(parent)
+HeartbeatManager::HeartbeatManager(int queueSize, int interval, QObject *parent) : QThread(parent)
 {
     m_queueSize = queueSize;
     m_inteval = interval;
@@ -8,16 +8,18 @@ HeartbeatManager::HeartbeatManager(int queueSize, int interval, QObject *parent)
     connect(m_timer, SIGNAL(timeout()), this, SLOT(sendHeartbeat()));
 }
 
-void HeartbeatManager::start()
-{
-    emit networkRequest("{\"type\" : \"hbNegotiation\", \"body\" : \"" + QString::number(m_inteval * 2) + "\"}");
-    m_hbQueue.clear();
-    m_timer->start(m_inteval);
+void HeartbeatManager::run(){
+
+    while(1){
+
+        msleep(m_inteval);
+        sendHeartbeat();
+    }
 }
 
 void HeartbeatManager::stop()
 {
-    m_timer->stop();
+    quit();
 }
 
 void HeartbeatManager::setRunning(bool running)
@@ -41,7 +43,7 @@ void HeartbeatManager::enqueue(QString uuid)
 
         if (m_hbQueue.length() == m_queueSize){
 
-            log("Heartbeat queue is full");
+            logm("Heartbeat queue is full");
             emit queueFull();
             m_hbQueue.clear();
         }

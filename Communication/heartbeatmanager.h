@@ -5,10 +5,11 @@
 #include <QTimer>
 #include <QUuid>
 #include <QQueue>
+#include <QThread>
 
 #include "../Log/log.h"
 
-class HeartbeatManager : public QObject
+class HeartbeatManager : public QThread
 {
     Q_OBJECT
 
@@ -20,7 +21,6 @@ class HeartbeatManager : public QObject
         void networkRequest(QString request);
 
     public slots:
-        void start();
         void stop();
         void setRunning(bool running);
         void validate(QString uuid);
@@ -34,6 +34,9 @@ class HeartbeatManager : public QObject
     private slots:
         void sendHeartbeat();
         void enqueue(QString uuid);
+
+    protected:
+        void run();
 };
 
 #endif // HEARTBEATMANAGER_H
