@@ -7,16 +7,20 @@ ThManager::ThManager(QObject *parent) : QObject(parent)
 
 ThManager::~ThManager(){
 
-    qDebug() << "Deleting Thread manager " << this->objectName() ;
+    dbg("Deleting Thread manager " + this->objectName()) ;
     stop();
 }
 
-void ThManager::createThreadForObject(QObject *obj){
+void ThManager::createThreadForObject(QObject *obj, QString name){
 
-    obj->setParent(0);
     QThread *th = new QThread();
-    connect(th, SIGNAL(finished()), th, SLOT(deleteLater()));
-    obj->moveToThread(th);
+        th->setObjectName(name);
+        obj->setParent(0);
+        obj->setObjectName(name);
+        connect(obj, SIGNAL(destroyed()), th, SLOT(quit()));
+        connect(th, SIGNAL(finished()), th, SLOT(deleteLater()));
+
+    obj->moveToThread(th);;
     th->start();
 
     m_threads.append(th);
@@ -25,15 +29,9 @@ void ThManager::createThreadForObject(QObject *obj){
 
 void ThManager::stop(){
 
-    foreach (QThread *th, m_threads) {
-
-        th->quit();
-        th->terminate();
-        th->wait(5000);
-    }
-
     foreach (QObject *tho, m_threadsObject) {
 
+        dbg("    -> detroying thread object " + tho->objectName());
         tho->deleteLater();
     }
 }

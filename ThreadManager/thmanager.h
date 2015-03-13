@@ -5,6 +5,7 @@
 #include <QThread>
 
 #include <QDebug>
+#include "../Log/log.h"
 
 class ThManager : public QObject
 {
@@ -23,7 +24,7 @@ class ThManager : public QObject
 
     public slots:
 
-        void createThreadForObject(QObject *obj);
+        void createThreadForObject(QObject *obj, QString name = "");
         void stop();
 };
 
