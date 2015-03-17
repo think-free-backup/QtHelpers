@@ -88,7 +88,8 @@ void JsonCommunication::forceDisconnect()
 
 void JsonCommunication::serverRequest(QString request)
 {
-    dbgc("Sending to socket : " + request, "2");
+    if (!request.contains("\"hb\""))
+        dbgc("Sending to socket : " + request, "2");
 
     QByteArray packet;
     packet.append(":::0:::");
@@ -124,7 +125,8 @@ void JsonCommunication::messageReceived()
 
                 QString mes = data.remove(":::1:::");
 
-                dbgc("Received from server : " + mes ,"1");
+                if (!mes.contains("\"hbAck\""))
+                    dbgc("Received from server : " + mes ,"1");
 
                 emit jsonReceived(mes);
             }
