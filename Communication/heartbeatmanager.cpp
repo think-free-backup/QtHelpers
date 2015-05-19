@@ -4,6 +4,7 @@ HeartbeatManager::HeartbeatManager(int queueSize, int interval, QObject *parent)
 {
     m_queueSize = queueSize;
     m_inteval = interval;
+    m_running = false;
     m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(sendHeartbeat()));
 }
@@ -24,17 +25,17 @@ void HeartbeatManager::stop()
 
 void HeartbeatManager::setRunning(bool running)
 {
-    if (running)
-        start();
-    else
-        stop();
+    m_running = running;
 }
 
 void HeartbeatManager::sendHeartbeat()
 {
-    QString uuid = QUuid::createUuid().toString().replace("{","").replace("}","");
-    enqueue(uuid);
-    emit networkRequest("{\"type\" : \"hb\", \"body\" : \"" + uuid + "\"}");
+    if (m_running){
+
+        QString uuid = QUuid::createUuid().toString().replace("{","").replace("}","");
+        enqueue(uuid);
+        emit networkRequest("{\"type\" : \"hb\", \"body\" : \"" + uuid + "\"}");
+    }
 }
 
 void HeartbeatManager::enqueue(QString uuid)

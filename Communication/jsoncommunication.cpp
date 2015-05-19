@@ -1,7 +1,9 @@
 #include "jsoncommunication.h"
 
-JsonCommunication::JsonCommunication(QString host, int port, QObject *parent) : QObject(parent)
+JsonCommunication::JsonCommunication(QStringList host, int port, QObject *parent) : QObject(parent)
 {
+    m_hostMaxIdx = host.count()-1 ;
+    m_currentHostIdx = 0;
     m_host = host;
     m_port = port;
     m_connected = false;
@@ -50,36 +52,46 @@ void JsonCommunication::createSocket(){
 
 void JsonCommunication::connectionChecker()
 {
-    if (m_socket->state() != QAbstractSocket::ConnectedState)
+    if (!this->connected() || m_socket->state() != QAbstractSocket::ConnectedState)
     {
         this->setConnected(false);
 
         m_socket->deleteLater();
         this->createSocket();
 
-        m_socket->connectToHost(m_host,m_port);
+        m_socket->connectToHost(m_host.at(m_currentHostIdx),m_port);
         m_socket->waitForConnected(2500);
 
         if (m_socket->state() != QAbstractSocket::ConnectedState)
         {
-            logm("Can't connect to server");
+            logm("Can't connect to server : " + m_host.at(m_currentHostIdx));
 
             this->setConnected(false);
+
+            // Try next host
+
+            if (m_currentHostIdx < m_hostMaxIdx)
+                m_currentHostIdx++;
+            else
+                m_currentHostIdx = 0;
         }
         else
         {
-            logm("Client is now connected");
+            logm("Client is now connected to server : " + m_host.at(m_currentHostIdx));
 
             this->setConnected(true);
+
+            // Reinit host list
+
+            m_currentHostIdx = 0;
         }
     }
 }
 
 void JsonCommunication::forceDisconnect()
 {
-    logm("Forcing disconnection");
-
     this->setConnected(false);
+
     m_socket->disconnectFromHost();
 }
 
@@ -96,13 +108,13 @@ void JsonCommunication::serverRequest(QString request)
     packet.append(request);
     packet.append(":::1:::");
 
-    if (m_socket->state() == QTcpSocket::ConnectedState){
+    if (this->connected() && m_socket->state() == QTcpSocket::ConnectedState){
 
         m_socket->write(packet);
-        //m_socket->waitForBytesWritten();
     }
     else{
 
+        logm("Can't write to server, forcing disconnection (" + request + ")");
         forceDisconnect();
     }
 

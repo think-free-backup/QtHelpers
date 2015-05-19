@@ -22,7 +22,7 @@ class JsonCommunication : public QObject
 
     public:
 
-        explicit JsonCommunication(QString host,int port, QObject *parent = 0);
+        explicit JsonCommunication(QStringList host,int port, QObject *parent = 0);
 
         // Properties
 
@@ -47,13 +47,18 @@ class JsonCommunication : public QObject
     private:
 
         QTcpSocket *m_socket;
-        QString m_host;
+        QStringList m_host;
         int m_port;
         QTimer *m_connectionCheckerTimer;
         QString m_dataStr;
 
         // Properties
         bool m_connected;
+
+        // Host list managment
+
+        int m_hostMaxIdx;
+        int m_currentHostIdx;
 
     private slots:
 

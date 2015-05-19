@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QMetaObject>
 #include <QDateTime>
+#include <QString>
+#include <QFile>
 
 class Log : public QObject
 {
@@ -16,6 +18,15 @@ class Log : public QObject
 
         static void write(QString function,  QString log);
         static void write_color(QString function,  QString log , QString color);
+        static void setHtmlPath(QString path, QString name = "");
+
+    private:
+
+        static void writeHtml(QDateTime &date, QString log, QString function);
+        static void writeQDebug(QDateTime &date, QString log, QString function);
+
+        static QString s_htmlPath;
+        static bool s_useHtml;
 };
 
 // Log macros

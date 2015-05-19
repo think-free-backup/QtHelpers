@@ -30,6 +30,7 @@ class HeartbeatManager : public QThread
         int m_queueSize;
         QQueue<QString> m_hbQueue;
         int m_inteval;
+        bool m_running;
     
     private slots:
         void sendHeartbeat();
