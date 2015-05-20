@@ -90,5 +90,5 @@ void Log::writeHtml(QDateTime &date, QString log, QString function){
 
     QTextStream textStream(&outFile);
 
-    textStream << "<div class=\"m\"><span style=\"color:#b4c8d2;\">" << date.toString("hh:mm:ss") << "</span> : " << log << " <span style=\"color:#333333;\">[" << function << "]</span></div> \n";
+    textStream << "<div class=\"m\"><span style=\"color:#78858C;\">" << date.toString("hh:mm:ss") << "</span> " << log << " <span style=\"color:#41484D;\">[" << function << "]</span></div> \n";
 }
