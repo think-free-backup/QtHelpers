@@ -8,6 +8,8 @@
 #include <QString>
 #include <QFile>
 
+#define HTMLPATH "./logs/portal-log.html"
+
 class Log : public QObject
 {
     Q_OBJECT
@@ -18,15 +20,12 @@ class Log : public QObject
 
         static void write(QString function,  QString log);
         static void write_color(QString function,  QString log , QString color);
-        static void setHtmlPath(QString path, QString name = "");
+        static void initHtmlLog(QString name = "");
 
     private:
 
         static void writeHtml(QDateTime &date, QString log, QString function);
         static void writeQDebug(QDateTime &date, QString log, QString function);
-
-        static QString s_htmlPath;
-        static bool s_useHtml;
 };
 
 // Log macros

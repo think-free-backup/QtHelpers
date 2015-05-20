@@ -1,20 +1,13 @@
 #include "log.h"
 
-QString Log::s_htmlPath = "";
-bool Log::s_useHtml = false;
-
 Log::Log(QObject *parent) : QObject(parent)
 {
 
 }
 
-void Log::setHtmlPath(QString path, QString name){
+void Log::initHtmlLog(QString name){
 
-    s_htmlPath = path;
-
-    // TODO : Init path here
-
-    QFile outFile(s_htmlPath);
+    QFile outFile(HTMLPATH);
     outFile.open(QIODevice::WriteOnly);
 
     QTextStream textStream(&outFile);
@@ -41,20 +34,15 @@ void Log::setHtmlPath(QString path, QString name){
     textStream <<  "</style></head><body> \n";
     textStream <<  "<h1>" << name << "  log file</h1> \n";
     textStream <<  " \n";
-
-    s_useHtml = true;
 }
 
-void Log::write(QString function, QString log)
-{
+void Log::write(QString function, QString log){
+
     QDateTime date = QDateTime::currentDateTime();
 
     Log::writeQDebug(date, log, function);
 
-    if (s_useHtml){
-
-        Log::writeHtml(date, log, function);
-    }
+    Log::writeHtml(date, log, function);
 }
 
 void Log::write_color(QString function, QString log, QString color){
@@ -68,10 +56,7 @@ void Log::write_color(QString function, QString log, QString color){
         Log::writeQDebug(date, "\e[38;5;" + color + "m" + log + "\e[0m", function);
     #endif
 
-    if (s_useHtml){
-
-        Log::writeHtml(date, log, function);
-    }
+    Log::writeHtml(date, log, function);
 }
 
 void Log::writeQDebug(QDateTime &date, QString log, QString function){
@@ -85,7 +70,7 @@ void Log::writeQDebug(QDateTime &date, QString log, QString function){
 
 void Log::writeHtml(QDateTime &date, QString log, QString function){
 
-    QFile outFile(s_htmlPath);
+    QFile outFile(HTMLPATH);
     outFile.open(QIODevice::Append);
 
     QTextStream textStream(&outFile);
