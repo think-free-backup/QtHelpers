@@ -5,9 +5,12 @@ Log::Log(QObject *parent) : QObject(parent)
 
 }
 
-void Log::initHtmlLog(QString name){
+void Log::initHtmlLog(QString name, QString file){
 
-    QFile outFile(HTMLPATH);
+    QDir d;
+        d.mkdir(HTMLPATH);
+
+    QFile outFile(HTMLPATH + file);
     outFile.open(QIODevice::WriteOnly);
 
     QTextStream textStream(&outFile);
@@ -36,16 +39,16 @@ void Log::initHtmlLog(QString name){
     textStream <<  " \n";
 }
 
-void Log::write(QString function, QString log){
+void Log::write(QString function, QString log, QString file){
 
     QDateTime date = QDateTime::currentDateTime();
 
     Log::writeQDebug(date, log, function);
 
-    Log::writeHtml(date, log, function);
+    Log::writeHtml(date, log, function, file);
 }
 
-void Log::write_color(QString function, QString log, QString color){
+void Log::write_color(QString function, QString log, QString color, QString file){
 
     QDateTime date = QDateTime::currentDateTime();
 
@@ -56,7 +59,7 @@ void Log::write_color(QString function, QString log, QString color){
         Log::writeQDebug(date, "\e[38;5;" + color + "m" + log + "\e[0m", function);
     #endif
 
-    Log::writeHtml(date, log, function);
+    Log::writeHtml(date, log, function, file);
 }
 
 void Log::writeQDebug(QDateTime &date, QString log, QString function){
@@ -68,9 +71,9 @@ void Log::writeQDebug(QDateTime &date, QString log, QString function){
     #endif
 }
 
-void Log::writeHtml(QDateTime &date, QString log, QString function){
+void Log::writeHtml(QDateTime &date, QString log, QString function, QString file){
 
-    QFile outFile(HTMLPATH);
+    QFile outFile(HTMLPATH + file);
     outFile.open(QIODevice::Append);
 
     QTextStream textStream(&outFile);
