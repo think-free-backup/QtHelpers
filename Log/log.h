@@ -31,21 +31,21 @@ class Log : public QObject
 
 // Log macros
 
-#define logm(text) Log::write(Q_FUNC_INFO, text);
-#define logc(text, color) Log::write_color(Q_FUNC_INFO, text, color);
-#define logfile(text, file) Log::write(Q_FUNC_INFO, text, file);
+#define logm(text) Log::write(Q_FUNC_INFO, text)
+#define logc(text, color) Log::write_color(Q_FUNC_INFO, text, color)
+#define logfile(text, file) Log::write(Q_FUNC_INFO, text, file)
 
 // Debug macros
 
 #ifdef LOGDEBUG
 
-    #define dbg(text) Log::write(Q_FUNC_INFO, text);
-    #define dbgc(text, color) Log::write_color(Q_FUNC_INFO, text, color);
+    #define dbg(text) Log::write(Q_FUNC_INFO, text)
+    #define dbgc(text, color) Log::write_color(Q_FUNC_INFO, text, color)
 
 #else
 
-    #define dbg(text);
-    #define dbgc(text, color);
+    #define dbg(text)
+    #define dbgc(text, color)
 
 #endif
 
