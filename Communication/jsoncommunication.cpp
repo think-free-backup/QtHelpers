@@ -8,6 +8,9 @@ JsonCommunication::JsonCommunication(QStringList host, int port, QObject *parent
     m_port = port;
     m_connected = false;
 
+    m_regex.setPattern(":::0:::(.*):::1:::");
+    m_regex.setMinimal(true);
+
     this->createSocket();
 
     m_connectionCheckerTimer = new QTimer(this);
@@ -128,28 +131,32 @@ void JsonCommunication::messageReceived()
 
     m_dataStr.append(datagram);
 
-    QStringList dataList = m_dataStr.split(":::0:::");
+    while (m_regex.indexIn(m_dataStr) > -1){
 
-    foreach (QString data, dataList) {
-
-        if (data != ""){
-
-            if (data.contains(":::1:::")){
-
-                QString mes = data.remove(":::1:::");
-
-                if (!mes.contains("\"hbAck\""))
-                    dbgc("Received from server : " + mes ,"1");
-
-                emit jsonReceived(mes);
-            }
-            else{
-
-                m_dataStr = data;
-                return;
-            }
-        }
+       emit jsonReceived(m_regex.cap(1));
+       m_dataStr.remove(m_regex.cap(0));
     }
 
-    m_dataStr = "";
+//    QStringList dataList = m_dataStr.split(":::0:::", QString::SkipEmptyParts);
+
+//    foreach (QString data, dataList) {
+
+
+//        if (data.contains(":::1:::")){
+
+//            QString mes = data.remove(":::1:::");
+
+//            if (!mes.contains("\"hbAck\""))
+//                logc("Received from server : " + mes ,"1");
+
+//            emit jsonReceived(mes);
+//        }
+//        else{
+
+//            m_dataStr = data;
+//            return;
+//        }
+//    }
+
+//    m_dataStr = "";
 }
