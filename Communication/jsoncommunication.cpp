@@ -133,8 +133,9 @@ void JsonCommunication::messageReceived()
 
     while (m_regex.indexIn(m_dataStr) > -1){
 
-        if (!m_regex.cap(1).contains("\"hbAck\""))
+        if (!m_regex.cap(1).contains("\"hbAck\"")) {
             logc("Received from server : " + m_regex.cap(1) ,"1");
+        }
 
         emit jsonReceived(m_regex.cap(1));
         m_dataStr.remove(m_regex.cap(0));
