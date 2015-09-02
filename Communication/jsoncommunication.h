@@ -51,6 +51,7 @@ class JsonCommunication : public QObject
         int m_port;
         QTimer *m_connectionCheckerTimer;
         QString m_dataStr;
+        QRegExp m_regex;
 
         // Properties
         bool m_connected;
@@ -68,7 +69,7 @@ class JsonCommunication : public QObject
 
         // Properties
         void setConnected(bool arg);
-    
+
 };
 
 #endif // NODEJSNETWORKMANAGER_H

@@ -8,6 +8,9 @@ JsonCommunication::JsonCommunication(QStringList host, int port, QObject *parent
     m_port = port;
     m_connected = false;
 
+    m_regex.setPattern(":::0:::(.*):::1:::");
+    m_regex.setMinimal(true);
+
     this->createSocket();
 
     m_connectionCheckerTimer = new QTimer(this);
@@ -43,6 +46,7 @@ void JsonCommunication::setConnected(bool arg)
 
 void JsonCommunication::createSocket(){
 
+    m_dataStr = "";
     m_socket = new QTcpSocket(this);
     m_socket->setSocketOption(QAbstractSocket::LowDelayOption , 1);
     connect(m_socket,SIGNAL(readyRead()),this,SLOT(messageReceived()));
@@ -127,28 +131,13 @@ void JsonCommunication::messageReceived()
 
     m_dataStr.append(datagram);
 
-    QStringList dataList = m_dataStr.split(":::0:::");
+    while (m_regex.indexIn(m_dataStr) > -1){
 
-    foreach (QString data, dataList) {
-
-        if (data != ""){
-
-            if (data.contains(":::1:::")){
-
-                QString mes = data.remove(":::1:::");
-
-                if (!mes.contains("\"hbAck\""))
-                    dbgc("Received from server : " + mes ,"1");
-
-                emit jsonReceived(mes);
-            }
-            else{
-
-                m_dataStr = data;
-                return;
-            }
+        if (!m_regex.cap(1).contains("\"hbAck\"")) {
+            logc("Received from server : " + m_regex.cap(1) ,"1");
         }
-    }
 
-    m_dataStr = "";
+        emit jsonReceived(m_regex.cap(1));
+        m_dataStr.remove(m_regex.cap(0));
+    }
 }

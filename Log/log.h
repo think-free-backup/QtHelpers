@@ -7,8 +7,9 @@
 #include <QDateTime>
 #include <QString>
 #include <QFile>
+#include <QDir>
 
-#define HTMLPATH "./logs/portal-log.html"
+#define HTMLPATH "./logs/"
 
 class Log : public QObject
 {
@@ -18,13 +19,13 @@ class Log : public QObject
 
         explicit Log(QObject *parent = 0);
 
-        static void write(QString function,  QString log);
-        static void write_color(QString function,  QString log , QString color);
-        static void initHtmlLog(QString name = "");
+        static void write(QString function,  QString log, QString file = "portal-log.html");
+        static void write_color(QString function,  QString log , QString color, QString file = "portal-log.html");
+        static void initHtmlLog(QString name = "", QString file = "portal-log.html");
 
     private:
 
-        static void writeHtml(QDateTime &date, QString log, QString function);
+        static void writeHtml(QDateTime &date, QString log, QString function, QString file);
         static void writeQDebug(QDateTime &date, QString log, QString function);
 };
 
@@ -32,6 +33,8 @@ class Log : public QObject
 
 #define logm(text) Log::write(Q_FUNC_INFO, text)
 #define logc(text, color) Log::write_color(Q_FUNC_INFO, text, color)
+#define logfile(text, file) Log::write(Q_FUNC_INFO, text, file)
+
 
 // Debug macros
 
