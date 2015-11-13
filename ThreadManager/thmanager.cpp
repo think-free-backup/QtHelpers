@@ -1,7 +1,6 @@
 #include "thmanager.h"
 
-ThManager::ThManager(QObject *parent) : QObject(parent)
-{
+ThManager::ThManager(QObject *parent) : QObject(parent){
 
 }
 
@@ -13,7 +12,7 @@ ThManager::~ThManager(){
 
 void ThManager::createThreadForObject(QObject *obj, QString name){
 
-    QThread *th = new QThread();
+    QThread *th = new QThread(this);
         th->setObjectName(name);
         obj->setParent(0);
         obj->setObjectName(name);
