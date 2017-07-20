@@ -104,8 +104,11 @@ void JsonCommunication::forceDisconnect()
 
 void JsonCommunication::serverRequest(QString request)
 {
+
+#ifdef PORTALTRACE
     if (!request.contains("\"hb\""))
         dbgc("Sending to socket : " + request, "2");
+#endif
 
     QByteArray packet;
     packet.append(":::0:::");
@@ -133,9 +136,11 @@ void JsonCommunication::messageReceived()
 
     while (m_regex.indexIn(m_dataStr) > -1){
 
+#ifdef PORTALTRACE
         if (!m_regex.cap(1).contains("\"hbAck\"")) {
             logc("Received from server : " + m_regex.cap(1) ,"1");
         }
+#endif
 
         emit jsonReceived(m_regex.cap(1));
         m_dataStr.remove(m_regex.cap(0));
